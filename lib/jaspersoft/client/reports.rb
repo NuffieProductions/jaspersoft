@@ -60,7 +60,7 @@ module Jaspersoft
         if response.status == 200
           return response.data.value
         else
-          return "not found"
+          return response.data
         end
       end
       alias :poll :poll_report
