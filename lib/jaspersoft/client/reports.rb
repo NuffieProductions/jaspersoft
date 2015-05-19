@@ -32,6 +32,7 @@ module Jaspersoft
       # @option opts [Hash] :params A hash of key/value pairs matching with the input controls defined for the report
       # @return [String] A request ID
       def enqueue_report(path, params = {}, options = {})
+        params = params.symbolize_keys
         params = { file_type: report_file_type.to_s, params: {} }.merge(params)
         params[:outputFormat] = params.delete(:file_type)
         params[:parameters] = convert_report_params params.delete(:params)
