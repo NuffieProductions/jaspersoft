@@ -72,9 +72,13 @@ module Jaspersoft
       # @return [File] Raw binary of the first format available
       def download_report(request_id, params = {}, options = {})
         report_response = get "#{endpoint_url}/reportExecutions/#{request_id}", params, options
-        if report_response.status == "ready"
-          format = report_response.exports[0].id # TODO: Accept options for which format to grab, verify it's available
-          get "#{endpoint_url}/reportExecutions/#{request_id}/exports/#{format}/outputResource", params, options
+
+        if report_response.status == "ready" || 200
+          # TODO: Accept options for which format to grab, verify it's available
+          response_data = options[:raw_response] ? report_response.data : report_response
+          export_id = response_data.exports[0].id
+
+          get "#{endpoint_url}/reportExecutions/#{request_id}/exports/#{export_id}/outputResource", params, options
         else
           return false
         end
